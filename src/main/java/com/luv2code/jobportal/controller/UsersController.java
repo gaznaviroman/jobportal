@@ -1,0 +1,54 @@
+package com.luv2code.jobportal.controller;
+
+import java.lang.foreign.Linker.Option;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import com.luv2code.jobportal.entity.Users;
+import com.luv2code.jobportal.entity.UsersType;
+import com.luv2code.jobportal.services.UsersService;
+import com.luv2code.jobportal.services.UsersTypeService;
+
+import jakarta.validation.Valid;
+
+@Controller
+public class UsersController {
+
+    private final UsersTypeService usersTypeService;
+    private final UsersService userservice;
+
+    @Autowired
+    public UsersController(UsersTypeService usersTypeService, UsersService userservice) {
+        this.usersTypeService = usersTypeService;
+        this.userservice = userservice;
+    }
+
+    @GetMapping("/register")
+    public String register(Model model) {
+        List<UsersType> usersTypes = usersTypeService.getAll();
+        model.addAttribute("getAllTypes", usersTypes);
+        model.addAttribute("user", new Users());
+        return "register";
+    }
+
+    @PostMapping("/register/new")
+    public String userRegistration(@Valid Users users, Model model) {
+        // System.out.println("User:: "+users);
+        Optional<Users> optionalusers = userservice.getUserByEmail(users.getEmail());
+        if (optionalusers.isPresent()) {
+            model.addAttribute("error", "email already registered, try to login or register with other email.");
+            List<UsersType> usersTypes = usersTypeService.getAll();
+            model.addAttribute("getAllTypes", usersTypes);
+            model.addAttribute("user", new Users());
+            return "register";
+        }
+        userservice.addNew(users);
+        return "dashboard";
+    }
+}
