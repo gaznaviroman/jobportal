@@ -1,6 +1,5 @@
 package com.luv2code.jobportal.controller;
 
-import java.lang.foreign.Linker.Option;
 import java.util.List;
 import java.util.Optional;
 
