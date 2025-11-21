@@ -32,7 +32,7 @@ public class JobSeekerProfile {
     private String employmentType;
     private String resume;
 
-    @Column(nullable = true, length = 64)
+    @Column(name = "profile_photo", nullable = true, length = 64)
     private String profile;
 
     @OneToMany(targetEntity = Skills.class, cascade = CascadeType.ALL, mappedBy = "jobSeekerProfile")
