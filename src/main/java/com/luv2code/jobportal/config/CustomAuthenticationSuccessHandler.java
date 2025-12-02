@@ -28,7 +28,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                 .getAuthority().equals("Recruiter"));   
 
         if(hasRecruiteRole || hasJobSeekerRole) {
-            response.sendRedirect("/dashboard");
+            response.sendRedirect("/dashboard/");
         }
     }
     
